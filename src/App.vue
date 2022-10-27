@@ -52,7 +52,9 @@ export default {
     <footer class="bg-light">
         <div class="container-md">
             <div class="row">
-                <p class="text-center m-1">&copy Marcos Arcusin - DWT4AV | Portales y Comercio Electrónico</p>
+                <div class="col-12">
+                    <p class="text-center m-1">&copy Marcos Arcusin - DWT4AV | Portales y Comercio Electrónico</p>
+                </div>
             </div>
         </div>
     </footer>
