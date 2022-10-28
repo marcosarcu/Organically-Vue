@@ -30,7 +30,7 @@ export default {
         <div class="container-md">
             <div class="row">
                 <div class="col-12">
-                    <p class="text-center m-1">&copy Marcos Arcusin - DWT4AV | Portales y Comercio Electrónico</p>
+                    <p class="text-center m-1">&copy Marcos Arcusin - DWT4AV | Clientes Web Mobile</p>
                 </div>
             </div>
         </div>
