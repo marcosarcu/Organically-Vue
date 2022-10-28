@@ -1,7 +1,9 @@
 <script>
 import {addService, getServices} from '../prices/services.js'
+import { Skeletor } from 'vue-skeletor';
     export default {
         name: 'Admin',
+        components: {Skeletor},
         data() {
             return {
                 newService: {
@@ -17,7 +19,8 @@ import {addService, getServices} from '../prices/services.js'
                     message: ''
                 },
                 showAddForm: false,
-                services: []
+                services: [],
+                
             }
         },
         created() {
@@ -50,7 +53,9 @@ import {addService, getServices} from '../prices/services.js'
             }
         },
         computed: {
-            // ...
+            isLoading() {
+                return this.services.length === 0;
+            }
         }
     }
 </script>
@@ -93,6 +98,8 @@ import {addService, getServices} from '../prices/services.js'
                 <button class="btn btn-primary" type="submit">Agregar Servicio</button>
             </form>
         </div>
+
+        <!-- To Do: Cambiar tabla por cards, usando componentes.  -->
         <table class="table table-responsive-md table-hover mb-5">
             <thead>
                 <tr class="align-items-center">
@@ -103,6 +110,12 @@ import {addService, getServices} from '../prices/services.js'
                 </tr>
             </thead>
             <tbody>
+                <template v-if="isLoading">
+                    <tr v-for="i in 3">
+                        <td v-for="i in 4"><Skeletor width="70%" height="125px"></Skeletor></td>
+                    </tr>
+                </template>
+                
                 <tr v-for="service in services" class="align-items-center">
                     <td><img class="admin-img" :src="`./imgs/${service.image}`" :alt="service.image_alt"></td>
                     <td><p>{{service.name}}</p></td>
@@ -116,5 +129,6 @@ import {addService, getServices} from '../prices/services.js'
                 </tr>
             </tbody>
         </table>
+        
     </div>
 </template>

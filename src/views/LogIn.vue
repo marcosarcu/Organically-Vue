@@ -23,6 +23,7 @@ export default {
             .then(() =>{
                 this.status.type = "success";
                 this.status.message = "Se ha iniciado sesión correctamente";
+                this.$router.push({name: "profile"});
             }) 
             .catch((error) => {
                 this.status.type = "danger";

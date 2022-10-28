@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { register, subscribeToAuthChanges } from "../services/auth.js";
+import { subscribeToAuthChanges } from "../services/auth.js";
 import Home from "../views/Home.vue";
 import Prices from "../views/Prices.vue";
 import LogIn from "../views/LogIn.vue";
@@ -8,6 +8,7 @@ import Admin from "../views/Admin.vue";
 import Profile from "../views/Profile.vue";
 import EditService from "../views/EditService.vue";
 import DeleteService from "../views/DeleteService.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
     {
@@ -28,7 +29,8 @@ const routes = [
     },
     {
         component: Profile,
-        path: '/profile',
+        name: 'profile',
+        path: '/perfil',
         meta: {
             requiresAuth: true,
         }
@@ -53,12 +55,27 @@ const routes = [
         meta: {
             requiresAuth: true,
         }
+    },
+    {
+        // Página 404
+        path: "/:catchAll(.*)",
+        component: NotFound 
     }
 ];
 
 const router = createRouter({
     routes,
     history: createWebHashHistory(),
+    scrollBehavior(to, from, savedPosition) {
+        // make it work with anchor links
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: 'smooth',
+            };
+        }
+        return { top: 0 }
+    }
 });
 
 // Auth guard
@@ -77,5 +94,7 @@ router.beforeEach((to, from) => {
         }
     }
 });
+
+
 
 export default router;

@@ -3,7 +3,8 @@ import {db} from '../services/firestore.js';
 
 async function getServices(){
     const servicesCol = collection(db, 'services');
-    const servicesSnapshot = await getDocs(servicesCol, orderBy('createdAt', 'desc'));
+    const q = query(servicesCol, orderBy('createdAt', 'asc'));
+    const servicesSnapshot = await getDocs(q);
     const servicesList = servicesSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     return servicesList;
 };

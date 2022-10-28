@@ -3,7 +3,7 @@ import './services/firestore';
 import {createApp} from "vue";
 import App from "./App.vue";
 import router from "./router/router.js";
-import 'bootstrap';
+import { Tooltip, Toast, Popover } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css';
 import './assets/css/vue-skeletor.css';

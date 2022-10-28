@@ -1,7 +1,7 @@
 <script>
 import router from './router/router';
 import NavBar from './assets/components/NavBar.vue';
-import { subscribeToAuthChanges } from './services/auth';
+// import { subscribeToAuthChanges } from './services/auth';
 export default {
     name: "App",
     components: { router, NavBar },

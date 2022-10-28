@@ -1,4 +1,5 @@
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import { updateUserProfile as updateUserProfileDb, createUserProfile }  from "./user-profiles";
 
 const auth = getAuth();
 
@@ -18,22 +19,36 @@ let userData = {
     email: null,
     uid: null,
 };
+
+if(localStorage.getItem('user') !== null){
+    userData = JSON.parse(localStorage.getItem('user'));
+}
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         userData.email = user.email;
         userData.uid = user.uid;
+        userData.displayName = user.displayName;
         // console.log(userData);
     } else {
         userData.email = null;
         userData.uid = null;
+        userData.displayName = null;
         // console.log(userData);
     }
+    localStorage.setItem('user', JSON.stringify(userData));
     notifyAll();
 });
 let observers = [];
 export function subscribeToAuthChanges(callback) {
     observers.push(callback);
+    console.log('Observer added', observers);
     notify(callback);
+
+    return () => {
+        observers = observers.filter((obs) => obs !== callback);
+        console.log('Observer removed', observers);
+    }
 }
 function notify(callback) {
     callback({...userData});
@@ -48,9 +63,29 @@ export function logIn(email, password) {
 }
   
 export function logOut() {
-      return signOut(auth);
+    return signOut(auth);
 }
 
-export function register(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password)
+export async function register(email, password) {
+    const {user} = await createUserWithEmailAndPassword(auth, email, password);
+    return createUserProfile(user.uid, {email});
+}
+
+// update profile functions
+export async function updateUserProfile(displayName) {
+    const authPromise = updateProfile(auth.currentUser, {
+        displayName,
+    });
+    // actualiza el perfil en la base de datos
+    const dbPromise = updateUserProfileDb(auth.currentUser.uid, {
+        displayName,
+    });
+
+    await Promise.all([authPromise, dbPromise]);
+    userData = {
+        ...userData,
+        displayName,
+    };
+
+    notifyAll();
 }
