@@ -1,6 +1,8 @@
 <script>
 import logo from '../imgs/logo.png';
 import { subscribeToAuthChanges, logOut } from '../../services/auth';
+import { getUserRole } from '../../services/user-profiles';
+
 
 export default {
     name: "NavBar",
@@ -8,19 +10,36 @@ export default {
         logo,
         user: {
             email: null,
-            uid: null
-
+            uid: null,
         },
+        role: 'user',
     }),
     mounted() {
-        subscribeToAuthChanges(user => this.user = user);
-
+        let callback = (user) => {
+            this.user = user;
+            getUserRole(user.uid).then((role) => {
+                this.role = role;
+            }).catch((error) => {
+                // Da un error, si no se ha logueado. Lo ignoro.
+                // uncaught (in promise) TypeError: Cannot read properties of null (reading 'indexOf')
+            });
+        };
+        subscribeToAuthChanges(callback);       
     },
     methods: {
         handleLogOut() {
             logOut();
+            this.role = 'user';
             this.$router.push({path: '/login'});
         }
+    },
+    computed: {
+        isAdmin() {
+            return this.role === 'admin';
+        },
+        isUser() {
+            return this.role === 'user';
+        },
     }
 }
 </script>
@@ -48,11 +67,18 @@ export default {
                         <router-link class="btn btn-primary" to="/register">Registrarse</router-link>
                     </li>
                 </template>
-                <!-- <li class="nav-item m-1">
-                        <a class="btn btn-primary" href="{{route('home')}}">Ir al sitio</a>
-                    </li> -->
                 <template v-else>
-                    <li class="nav-item m-1">
+                    <template v-if="isUser">
+                        <li class="nav-item m-1">
+                            <router-link class="nav-link" to="/chat/nkzCGlwFmZMkxIJLZROxgAcNOGS2/">Chat de ayuda</router-link>
+                        </li>
+                    </template>
+                    <template v-if="isAdmin">
+                        <li class="nav-item m-1">
+                            <router-link class="nav-link" to="/chatAdmin/">Buzón de chat</router-link>
+                        </li>
+                    </template>
+                    <li v-if="isAdmin" class="nav-item m-1">
                         <router-link class="btn btn-primary" to="/admin">Admin</router-link>
                     </li>
                     <li class="nav-item m-1">

@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
-import { updateUserProfile as updateUserProfileDb, createUserProfile }  from "./user-profiles";
+import { updateUserProfile as updateUserProfileDb, createUserProfile, getUserRole }  from "./user-profiles";
 
 const auth = getAuth();
 
@@ -29,12 +29,10 @@ onAuthStateChanged(auth, (user) => {
         userData.email = user.email;
         userData.uid = user.uid;
         userData.displayName = user.displayName;
-        // console.log(userData);
     } else {
         userData.email = null;
         userData.uid = null;
         userData.displayName = null;
-        // console.log(userData);
     }
     localStorage.setItem('user', JSON.stringify(userData));
     notifyAll();

@@ -35,7 +35,8 @@ export default {
 </script>
 
 <template>
-    <div class="row">
+    <section class="row pt-5 pb-5 align-items-center">
+        <h1>Iniciar sesión</h1>
         <div v-if="status.message !== ''" :class="`alert alert-${status.type || info}`">
             {{status.message}}
         </div>
@@ -46,5 +47,5 @@ export default {
             <input type="password" v-model="user.password" class="form-control mb-3" id="password" name="password" placeholder="Contraseña">
             <button type="submit" class="btn btn-primary mb-3">Ingresar</button>
         </form>
-   </div>
+   </section>
 </template>

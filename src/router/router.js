@@ -9,6 +9,8 @@ import Profile from "../views/Profile.vue";
 import EditService from "../views/EditService.vue";
 import DeleteService from "../views/DeleteService.vue";
 import NotFound from "../views/NotFound.vue";
+import Chat from "../views/Chat.vue";
+import ChatAdmin from "../views/ChatAdmin.vue";
 
 const routes = [
     {
@@ -52,6 +54,22 @@ const routes = [
     {
         component: DeleteService,
         path: '/admin/delete/:id',
+        meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        path: "/chat/:id",
+        name: "Chat",
+        component: Chat,
+        meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        path: "/chatadmin/",
+        name: "ChatAdmin",
+        component: ChatAdmin,
         meta: {
             requiresAuth: true,
         }

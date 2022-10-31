@@ -1,4 +1,4 @@
-import {getFirestore, updateDoc, setDoc, getDoc, doc, collection,} from "firebase/firestore";
+import {getFirestore, updateDoc, setDoc, getDoc, doc, collection, getDocs} from "firebase/firestore";
 const db = getFirestore();
 
 // Crea un usuario en la base de datos.
@@ -7,6 +7,7 @@ export function createUserProfile(uid, {email, displayName = null, photoURL = nu
         email,
         displayName,
         photoURL,
+        userRole: 'user',
     });
 }
 
@@ -19,12 +20,27 @@ export function updateUserProfile(uid, {displayName = null, photoURL = null}) {
     });
 }
 
+// Obtiene el perfil de un usuario.
+
+export async function getUserRole(uid) {
+    const userSnap = await getDoc(doc(db, 'users', uid));
+    return userSnap.data().userRole;
+}
+
+// Obtiene todos los usuarios.
+
+export async function getUsers() {
+    const usersSnap = await getDocs(collection(db, 'users'));
+    // add id to each user
+    return usersSnap.docs.map(user => ({uid: user.id, ...user.data()}));
+}
+
 // Obtiene la información de perfil del usuario.
 
 export async function getUserProfile(uid) {
     const userSnap = await getDoc(doc(db, 'users', uid));
     return {
-        id: uid,
+        uid: uid,
         ...userSnap.data(),
     };
 }

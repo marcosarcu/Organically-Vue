@@ -29,6 +29,7 @@ export default {
             .then(() => {
                 this.status.type = "success";
                 this.status.message = "Usuario registrado correctamente";
+                this.$router.push({name: "profile"});
             })
             .catch(error => {
                 this.status.type = "danger";
@@ -41,7 +42,9 @@ export default {
 
 <template>
     
-    <div class="row">
+    <section class="row pt-5 pb-5 align-items-center">
+        <h1>Registrarse</h1>
+        
         <div v-if="status.message !== ''" :class="`alert alert-${status.type || info}`">
             {{status.message}}
         </div>
@@ -55,7 +58,7 @@ export default {
             <input type="password" v-model="user.password_confirmation" class="form-control mb-3" id="password_confirmation" name="password_confirmation" placeholder="Contraseña">
             <button type="submit" class="btn btn-primary mb-3">Registrarse</button>
         </form>
-   </div>
+   </section>
         
     
 </template>

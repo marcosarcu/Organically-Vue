@@ -2,11 +2,11 @@ import { getFirestore, doc, getDocs, addDoc, collection, serverTimestamp, query,
 const db = getFirestore();
 
 
-// Obtener los chats privados entre dos usuarios, si no existen, los crea.
+// Obtener los chats privados entre dos users, si no existen, los crea.
 
 export async function getPrivateChatRef(uid1, uid2) {
     const chatsRef = collection(db, 'private-chats');
-    const chatsQuery = query(chatsRef, where('usuarios', '==', {
+    const chatsQuery = query(chatsRef, where('users', '==', {
         [uid1]: true,
         [uid2]: true,
     }), limit(1));
@@ -14,7 +14,7 @@ export async function getPrivateChatRef(uid1, uid2) {
     if (chatsSnap.empty) {
         // No existe el chat, lo creamos.
         const chatRef = await addDoc(chatsRef, {
-            usuarios: {
+            users: {
                 [uid1]: true,
                 [uid2]: true,
             },
@@ -38,12 +38,15 @@ export async function sendPrivateMessage({ uid1, uid2, text }) {
     });
 }
 
+// Exportar UID de admin.
+export const adminUid = 'nkzCGlwFmZMkxIJLZROxgAcNOGS2';
+
 // Subscribe a un chat privado.
 export async function subscribeToPrivateChat({ uid1, uid2 }, callback) {
     const chatRef = await getPrivateChatRef(uid1, uid2);
     const queryChat = query(
         collection(db, 'private-chats', chatRef.id, 'messages'),
-        orderBy('created_at'),
+        orderBy('created_at', 'desc'),
     );
     return onSnapshot(queryChat, snapshot => {
         const messages = snapshot.docs.map(doc => ({
