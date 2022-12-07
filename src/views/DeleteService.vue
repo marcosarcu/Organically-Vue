@@ -26,14 +26,7 @@ export default{
     'methods': {
         'handleDelete': function() {
             deleteService(this.$route.params.id)
-            .then(() => {
-                this.status.type = 'success';
-                this.status.message = 'Se ha eliminado el servicio correctamente';
-            })
-            .catch((error) => {
-                this.status.type = 'danger';
-                this.status.message = error.message;
-            });
+            this.$router.push('/admin');
         }
     }
 }

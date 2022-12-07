@@ -52,11 +52,11 @@ import { getServiceById, updateService } from '../prices/services.js'
             <form action="" method="POST" @submit.prevent="handleUpdate">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" v-model="service.name" class="form-control mb-3" id="name" name="name" placeholder="Nombre">
-                <label for="price" class="form-label">Precio</label>
+                <label for="price" class="form-label">Precio por mes</label>
                 <input type="number" step="0.01" v-model="service.price" class="form-control mb-3" id="price" name="price" placeholder="Precio">
                 <label for="description" class="form-label">Descripción</label>
                 <textarea v-model="service.description" class="form-control mb-3" id="description" name="description" placeholder="Descripción"></textarea>
-                <label for="image" class="form-label">Imagen</label>
+                <label for="image" class="form-label">Imagen (Nombre del archivo, localizado en la carpeta "imgs")</label>
                 <input type="text" v-model="service.image" class="form-control mb-3" id="image" name="image" placeholder="Imagen">
                 <label for="image_alt" class="form-label">Texto Alternativo de la Imagen</label>
                 <input type="text" v-model="service.image_alt" class="form-control mb-3" id="image_alt" name="image_alt" placeholder="Texto Alternativo de la Imagen">

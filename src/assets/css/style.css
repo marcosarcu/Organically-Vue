@@ -37,6 +37,10 @@ h3{
     max-width: 100px;
 }
 
+small{
+    font-size: 0.7em;
+}
+
 .testimonial-container{
     padding: 0;
 }
@@ -77,18 +81,18 @@ h3{
     margin-top: 20px;
 }
 
-.chat-messages{
-    height: 500px;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column-reverse;
-}
 
 .max-height{
     max-height: 500px;
     overflow-y: scroll;
 }
 
+.chat-messages{
+    height: 500px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
 .chat-message-left,
 .chat-message-right {
     display: flex;

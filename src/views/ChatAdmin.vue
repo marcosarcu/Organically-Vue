@@ -30,6 +30,7 @@ export default {
             'message': '',
             unsubscribeAuthFn: () => { },
             unsubscribeChatFn: () => { },
+            emptyChat: false,
         };
     },
     'mounted': function () {
@@ -39,7 +40,11 @@ export default {
 
 
         getUsers().then((users) => {
-            this.users = users;
+            users.forEach((user) => {
+                if (user.uid !== this.user.uid) {
+                    this.users.push(user);
+                }
+            });
         });
 
     },
@@ -62,6 +67,8 @@ export default {
             return timeConverter(date);
         },
         'handleUserChange': function(uid){
+            this.status.message = '';
+            this.emptyChat = false;
             this.userToChat.uid = uid;
             this.unsubscribeChatFn = subscribeToPrivateChat({ uid1: this.user.uid, uid2: this.userToChat.uid }, (messages) => {
             getUserProfile(this.userToChat.uid).then((user) => {
@@ -75,6 +82,7 @@ export default {
             if(messages.length == 0){
                 this.status.type = 'warning';
                 this.status.message = 'No hay mensajes, envia el primero!';
+                this.emptyChat = true;
             }
         });
         }
@@ -82,8 +90,8 @@ export default {
     },
     'computed': {
         'isLoading'() {
-            return this.messages.length === 0 && !(this.userToChat.uid === null);
-        },
+            return this.messages.length === 0 && !(this.userToChat.uid === null) && !this.emptyChat;
+        }
     },
 
 }

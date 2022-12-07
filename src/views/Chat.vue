@@ -28,6 +28,7 @@ export default {
             },
             'messages': [],
             'message': '',
+            'emptyChat': false,
             unsubscribeAuthFn: () => { },
             unsubscribeChatFn: () => { },
         };
@@ -37,9 +38,11 @@ export default {
             this.user = user;
         });
         this.unsubscribeChatFn = subscribeToPrivateChat({ uid1: this.user.uid, uid2: this.$route.params.id }, (messages) => {
-        getUserProfile(this.$route.params.id).then((user) => {
-            this.userToChat = user;
-        });
+            this.status.message = '';
+            this.emptyChat = false;
+            getUserProfile(this.$route.params.id).then((user) => {
+                this.userToChat = user;
+            });
             messages.forEach((message) => {
                 message.fromName = message.from === this.user.uid ? 'Tú' : this.userToChat.displayName || this.userToChat.email;
             });
@@ -48,6 +51,7 @@ export default {
             if(messages.length == 0){
                 this.status.type = 'warning';
                 this.status.message = 'No hay mensajes, envia el primero!';
+                this.emptyChat = true;
             }
         });
     },
@@ -74,7 +78,7 @@ export default {
     },
     'computed': {
         'isLoading' () {
-            return this.messages.length === 0;
+            return this.messages.length === 0 && !this.emptyChat;
         },
     },
     
@@ -101,8 +105,8 @@ export default {
                 <div class="position-relative">
                     <div class="chat-messages p-4">
                         <template v-for="i in 6">
-                            <Skeletor v-if="isLoading" width="33%" height="60px" class="chat-message-right"></Skeletor>
-                            <Skeletor v-if="isLoading" width="33%" height="60px" class="chat-message-left"></Skeletor>
+                            <Skeletor v-if="(isLoading)" width="33%" height="60px" class="chat-message-right"></Skeletor>
+                            <Skeletor v-if="(isLoading)" width="33%" height="60px" class="chat-message-left"></Skeletor>
                         </template>
                         <div
                         :class="`${message.fromName === 'Tú' ? 'chat-message-right' : 'chat-message-left'} pb-4`"

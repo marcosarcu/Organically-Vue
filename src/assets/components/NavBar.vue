@@ -79,7 +79,10 @@ export default {
                         </li>
                     </template>
                     <li v-if="isAdmin" class="nav-item m-1">
-                        <router-link class="btn btn-primary" to="/admin">Admin</router-link>
+                        <router-link class="btn btn-primary" to="/admin">Admin Servicio</router-link>
+                    </li>
+                    <li v-if="isAdmin" class="nav-item m-1">
+                        <router-link class="btn btn-primary" to="/adminUsers">Admin Usuarios</router-link>
                     </li>
                     <li class="nav-item m-1">
                         <router-link class="btn btn-primary" to="/perfil">Mi perfil ({{user.displayName ? user.displayName : user.email }})</router-link>

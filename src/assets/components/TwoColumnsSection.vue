@@ -28,6 +28,11 @@
                 'default': 'col-md-6'
             },
         },
+        computed: {
+            image_position_class() {
+                return this.image_position == 'left' ? 'order-first order-md-first' : 'order-first order-md-last';
+            }
+        }
     }
 
 </script>
@@ -37,7 +42,7 @@
         <div :class="content_size">
             <slot></slot>
         </div>
-        <div :class=" 'd-flex ' +  image_size + (image_position == 'left' ? ' order-first order-md-first' : ' order-first order-md-last ')">
+        <div :class=" 'd-flex ' +  image_size + ' ' + image_position_class">
             <img :src="'/imgs/' + image" :alt="image_alt" class="hero-img">
         </div>
     </section>

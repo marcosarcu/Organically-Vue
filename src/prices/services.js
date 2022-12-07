@@ -1,4 +1,4 @@
-import {collection, addDoc, onSnapshot, serverTimestamp, query, orderBy, getDocs, getDoc, doc, updateDoc, deleteDoc} from 'firebase/firestore';
+import {collection, addDoc, serverTimestamp, query, orderBy, getDocs, getDoc, doc, updateDoc, deleteDoc} from 'firebase/firestore';
 import {db} from '../services/firestore.js';
 
 async function getServices(){
@@ -36,5 +36,7 @@ async function deleteService(id){
     const serviceDoc = doc(servicesCol, id);
     return await deleteDoc(serviceDoc);
 };
+
+
 
 export {getServices, addService, getServiceById, updateService, deleteService};

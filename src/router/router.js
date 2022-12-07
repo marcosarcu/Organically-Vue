@@ -11,6 +11,7 @@ import DeleteService from "../views/DeleteService.vue";
 import NotFound from "../views/NotFound.vue";
 import Chat from "../views/Chat.vue";
 import ChatAdmin from "../views/ChatAdmin.vue";
+import AdminUsers from "../views/AdminUsers.vue";
 
 const routes = [
     {
@@ -40,6 +41,13 @@ const routes = [
     {
         component: Admin,
         path: '/admin',
+        meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        component: AdminUsers,
+        path: '/adminusers',
         meta: {
             requiresAuth: true,
         }

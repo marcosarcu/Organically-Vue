@@ -35,10 +35,13 @@ import { Skeletor } from 'vue-skeletor';
                     this.status.message = 'Todos los campos son obligatorios';
                     return
                 }
-                
-                addService(this.newService)
-
-                
+                addService(this.newService).then(() => {
+                    this.status.type = 'success';
+                    this.status.message = 'Servicio agregado correctamente';
+                }).catch(() => {
+                    this.status.type = 'danger';
+                    this.status.message = 'Error al agregar el servicio';
+                });
                 this.newService = {
                     name: '',
                     price: 0,
@@ -47,6 +50,9 @@ import { Skeletor } from 'vue-skeletor';
                     image_alt: '',
                     short_description: '',
                 }
+                getServices().then((docs) => {
+                this.services = docs;
+            });
             },
             toggleAddForm() {
                 this.showAddForm = !this.showAddForm;
@@ -76,7 +82,7 @@ import { Skeletor } from 'vue-skeletor';
                     <input class="form-control" name="name" id="name" type="text" v-model="newService.name" placeholder="Nombre del servicio">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Imagen</label>
+                    <label class="form-label" for="image">Imagen (Nombre del archivo, localizado en la carpeta "imgs")</label>
                     <input class="form-control" name="image" id="image" type="text" v-model="newService.image" placeholder="Imagen del servicio">
                 </div>
                 <div class="mb-3">
@@ -84,7 +90,7 @@ import { Skeletor } from 'vue-skeletor';
                     <input type="text" class="form-control" id="image_alt" name="image_alt" v-model="newService.image_alt" placeholder="Texto alternativo de imagen">
                 </div>
                 <div class="mb-3">
-                    <label for="price" class="form-label">Precio</label>
+                    <label for="price" class="form-label">Precio por mes</label>
                     <input type="number" step=".01" class="form-control" id="price" name="price" v-model="newService.price" placeholder="Service price">
                 </div>
                 <div class="mb-3">
@@ -99,7 +105,6 @@ import { Skeletor } from 'vue-skeletor';
             </form>
         </div>
 
-        <!-- To Do: Cambiar tabla por cards, usando componentes.  -->
         <table class="table table-responsive-md table-hover mb-5">
             <thead>
                 <tr class="align-items-center">
@@ -119,7 +124,7 @@ import { Skeletor } from 'vue-skeletor';
                 <tr v-for="service in services" class="align-items-center">
                     <td><img class="admin-img" :src="`./imgs/${service.image}`" :alt="service.image_alt"></td>
                     <td><p>{{service.name}}</p></td>
-                    <td><p>${{service.price}}</p></td>
+                    <td><p>${{service.price}} /mes</p></td>
                     <td>
                         <div class="d-grid">
                             <router-link :to="`/admin/edit/${service.id}`" class="btn btn-primary mb-2">Editar</router-link>

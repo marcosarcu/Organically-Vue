@@ -44,3 +44,11 @@ export async function getUserProfile(uid) {
         ...userSnap.data(),
     };
 }
+
+// Actualiza el servicio contratado por el usuario.
+
+export function updateUserService(uid, contractedServiceId) {
+    return updateDoc(doc(db, 'users', uid), {
+        contractedServiceId,
+    });
+}

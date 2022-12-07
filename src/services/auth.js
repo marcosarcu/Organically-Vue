@@ -87,3 +87,4 @@ export async function updateUserProfile(displayName) {
 
     notifyAll();
 }
+
